@@ -1,0 +1,11 @@
+Git bash commands:
+
+cd
+cd ..
+cp
+cp -r
+mkdir
+mv
+rm
+rm -r
+touch
