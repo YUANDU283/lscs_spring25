@@ -39,6 +39,7 @@ save_dim = (80, 30)
 cookies = 0
 buy_scale = 1.1
 cps = 0
+clickcps = 1
 buildings = {"cursor": {"image": os.getcwd()+"/sprites/cursor.png", 
                         "num": 0, 
                         "cps": 0.1, 
@@ -68,6 +69,12 @@ buildings = {"cursor": {"image": os.getcwd()+"/sprites/cursor.png",
                         "cps": 16000, 
                         "price": 100000, 
                         "button": {"pos": (30, 270), 
+                                   "dim": buy_dim}},
+            "FINAL BUILDING": {"image": os.getcwd()+"/sprites/FINAL.png", 
+                        "num": 0, 
+                        "cps": 9999999999999999999999999999999999999999999999999999999999999, 
+                        "price": 9999999, 
+                        "button": {"pos": (30, 330), 
                                    "dim": buy_dim}}}
 
 
@@ -195,7 +202,7 @@ while True:
             #if the mouse is clicked on the 
             # button the game is terminated 
             if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40: 
-                cookies += 1
+                cookies += clickcps
             add_buildings(mouse)
             click_save(mouse)
 
