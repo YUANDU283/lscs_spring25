@@ -77,10 +77,10 @@ def display_cookie(screen, mouse):
     # if mouse is hovered on a button it 
     # changes to lighter shade  
     if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40: 
-        pygame.draw.circle(screen,color_light,[width/2,height/2,140,40]) 
+        pygame.draw.rect(screen,color_light,[width/2,height/2,140,40]) 
           
     else: 
-        pygame.draw.circle(screen,color_dark,[width/2,height/2,140,40]) 
+        pygame.draw.rect(screen,color_dark,[width/2,height/2,140,40]) 
       
     # superimposing the text onto our button 
     screen.blit(cookie_text , cookie_pos) 
