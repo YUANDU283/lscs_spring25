@@ -19,11 +19,13 @@ def output(maze, file_name="mazes.py"):
         maze: list[list[int]]
         file_name: str, default="mazes.py"
     """
+    print("Outputting to file")
     with open(file_name, "w") as f:
         f.write("maze_data1 = [\n")
         for row in maze:
             f.write("        " + str(row) + ",\n")
         f.write("]\n")
+    print("Saved to file")
 
 
 def get_cell_position(mouse_pos):
