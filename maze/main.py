@@ -183,12 +183,14 @@ def plant_tree(map=MAZE1, ind=START_POSITION, path=[]):
         # Find possible paths from the possible moves
         if inds in path: # Don't want to go backwards?
             continue
-        path2 = copy.copy(path)
+        path2 = copy.deepcopy(path)
         path2.append(inds)
         plant_tree(map, ind=inds, path=path2)
 
 def climb_tree(possible_paths=possible_paths):
     # If multiple shortest paths, it will pick the first one it sees
+    for i in endorfinished:
+        print(i)
     try:
         shortest_path = possible_paths[0]
     except IndexError:
