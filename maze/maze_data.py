@@ -8,13 +8,13 @@ MAZE1 = [
     [0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0],
 ]
 
-#for i in range(len(MAZE1)):
-#    for j in range(len(MAZE1[0])):
- #       MAZE1[i][j] = 0
 
 import mazes
 MAZE1 = mazes.maze_data1
 
+#for i in range(len(MAZE1)):
+#    for j in range(len(MAZE1[0])):
+#        MAZE1[i][j] = 0
 
 START_POSITION = (6, 0) 
 END_POSITION = (0, 11)

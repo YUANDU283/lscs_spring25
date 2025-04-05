@@ -10,6 +10,7 @@ import argparse
 BUTTON_H = 40
 BUTTON_W = 100
 FONT_SIZE = 28
+mousedown = False
 
 
 def output(maze, file_name="mazes.py"):
@@ -170,6 +171,8 @@ def main():
     run(args.new)
 
 def run(start_new=False):
+    global mousedown
+    
     width = SCREEN_WIDTH
     height = SCREEN_HEIGHT + 2 * BUTTON_H
 
@@ -197,7 +200,11 @@ def run(start_new=False):
                 if event.key == pygame.K_ESCAPE:
                     quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                handle_mouse_click(mouse_pos, maze_data, button)
+                mousedown = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                mousedown = False
+        if mousedown:
+            handle_mouse_click(mouse_pos, maze_data, button)
 
         mouse_pushed_in = pygame.mouse.get_pressed()
         redraw_maze(screen, maze_data, button, mouse_pos, mouse_pushed_in)
