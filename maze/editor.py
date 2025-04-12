@@ -6,11 +6,15 @@ import colors
 from constants import *
 from mazes import maze_data1
 import argparse
+import time
 
 BUTTON_H = 40
 BUTTON_W = 100
 FONT_SIZE = 28
 mousedown = False
+press_limit = 0.3
+press_time = 0
+pressed = 0
 
 
 def output(maze, file_name="mazes.py"):
@@ -22,7 +26,8 @@ def output(maze, file_name="mazes.py"):
     """
     print("Outputting to file")
     with open(file_name, "w") as f:
-        f.write("maze_data1 = [\n")
+        f.write("from constants import *\nmaze_data1 = [[1 for _ in range(NUM_COLS)] for _ in range(NUM_ROWS)]")
+        f.write("\nmaze_data1 = [\n")
         for row in maze:
             f.write("        " + str(row) + ",\n")
         f.write("]\n")
@@ -114,6 +119,8 @@ def is_valid_cell(cell_x, cell_y):
 
 
 def handle_mouse_click(mouse_pos, maze_data, button):
+    global press_limit
+    global press_time
     """
     Flip cell value on click
     Output maze data on button click
@@ -124,7 +131,14 @@ def handle_mouse_click(mouse_pos, maze_data, button):
     """
     cell_x, cell_y = get_cell_position(mouse_pos)
     if is_valid_cell(cell_x, cell_y):
-        maze_data[cell_y][cell_x] = 1 - maze_data[cell_y][cell_x]
+        if press_time < press_limit:
+            maze_data[cell_y][cell_x] = 1 - maze_data[cell_y][cell_x]
+            if pygame.mouse.get_pressed()[2]:
+                maze_data[cell_y][cell_x] = 1
+        elif pygame.mouse.get_pressed()[2]:
+            maze_data[cell_y][cell_x] = 1
+        else:
+            maze_data[cell_y][cell_x] = 0
     # Output maze data on button click
     elif button.collidepoint(pygame.mouse.get_pos()):
         output(maze_data)
@@ -172,7 +186,8 @@ def main():
 
 def run(start_new=False):
     global mousedown
-    
+    global press_time
+
     width = SCREEN_WIDTH
     height = SCREEN_HEIGHT + 2 * BUTTON_H
 
@@ -201,9 +216,11 @@ def run(start_new=False):
                     quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mousedown = True
+                pressed = time.time()
             elif event.type == pygame.MOUSEBUTTONUP:
                 mousedown = False
-        if mousedown:
+        if pygame.mouse.get_pressed()[0] or pygame.mouse.get_pressed()[2]:
+            press_time = time.time()-pressed
             handle_mouse_click(mouse_pos, maze_data, button)
 
         mouse_pushed_in = pygame.mouse.get_pressed()

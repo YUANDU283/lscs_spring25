@@ -79,7 +79,8 @@ def draw_grid(screen):
 
 
 def run_game(screen, clock):
-    
+    global times
+
     # Start at the defined starting position.
     player_pos = list(START_POSITION)
 
@@ -95,19 +96,25 @@ def run_game(screen, clock):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
+        
+        #round_pos = [int(round(player_pos[0])), int(round(player_pos[1]))] # ROunded position
 
-                old_pos = copy.copy(player_pos)
-                if event.key == pygame.K_w:
-                    player_pos[0] = max(0, player_pos[0]-1)
-                elif event.key == pygame.K_s:
-                    player_pos[0] = min(len(MAZE1)-1, player_pos[0]+1)
-                if event.key == pygame.K_a:
-                    player_pos[1] = max(0, player_pos[1]-1)
-                elif event.key == pygame.K_d:
-                    player_pos[1] = min(len(MAZE1[0])-1, player_pos[1]+1)
-                if MAZE1[player_pos[0]][player_pos[1]] == 1:
-                    player_pos = old_pos
+        
+        keys = pygame.key.get_pressed()
+        old_pos = copy.copy(player_pos)
 
+        if times % 3 == 0 or times % 5 == 0: # Update every two ticks
+            if keys[pygame.K_w]:
+                player_pos[0] = max(0, player_pos[0]-speed)
+            elif keys[pygame.K_s]:
+                player_pos[0] = min(len(MAZE1)-1, player_pos[0]+speed)
+            if keys[pygame.K_a]:
+                player_pos[1] = max(0, player_pos[1]-speed)
+            elif keys[pygame.K_d]:
+                player_pos[1] = min(len(MAZE1[0])-1, player_pos[1]+speed)
+        
+        if MAZE1[player_pos[0]][player_pos[1]] == 1:
+            player_pos = old_pos
         if player_pos == list(END_POSITION):
             break
         # Clear the screen.
@@ -116,6 +123,8 @@ def run_game(screen, clock):
         draw_maze(screen, MAZE1, player_pos)
         draw_grid(screen)
         pygame.display.flip()
+
+        times += 1
     end = time.time()
     print(f"YOU FINISHED THE MAZE!\nYour time: {end-start}s")
     return
@@ -224,12 +233,14 @@ def demo_tree(shortest_path, clock, screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-                if event.key == pygame.K_SPACE:
-                    move += 1
-                    try:
-                        player_pos = shortest_path[move]
-                    except IndexError:
-                        running = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            move += 1
+            try:
+                player_pos = shortest_path[move]
+            except IndexError:
+                running = False
 
         # Clear the screen.
         screen.fill((0, 0, 0))
